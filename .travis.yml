@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t dorakueyon/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run dorakueyon/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t dorakueyon/multi-client ./client
+  - docker build -t dorakueyon/multi-nginx ./nginx
+  - docker build -t dorakueyon/multi-server./server
+  - docker build -t dorakueyon/multi-worker ./worker
+
+# Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+#  Take those images and push them to docker hun
+  - docker push dorakueyon/multi-client
+  - docker push dorakueyon/multi-nginx
+  - docker push dorakueyon/multi-server
+  - docker push dorakueyon/multi-worker
