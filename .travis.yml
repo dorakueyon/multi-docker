@@ -11,7 +11,7 @@ scripts:
 after_success:
   - docker build -t dorakueyon/multi-client ./client
   - docker build -t dorakueyon/multi-nginx ./nginx
-  - docker build -t dorakueyon/multi-server./server
+  - docker build -t dorakueyon/multi-server ./server
   - docker build -t dorakueyon/multi-worker ./worker
 
 # Log in to the docker CLI
